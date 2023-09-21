@@ -1,0 +1,80 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Receita</title>
+</head>
+<body>
+  <h1>Calculadora de Receita</h1>
+  <div id="admin-area" style="display: none;">
+    <h2>Área de Administração</h2>
+    <label for="novoIngrediente">Novo Ingrediente:</label>
+    <input type="text" id="novoIngrediente">
+    <label for="valorIngrediente">Valor do Ingrediente ($):</label>
+    <input type="number" id="valorIngrediente" step="0.01">
+    <label for="urlImagem">URL da Imagem:</label>
+    <input type="text" id="urlImagem">
+    <button onclick="adicionarNovoIngrediente()">Adicionar Ingrediente</button>
+  </div>
+
+  <div>
+    <label for="ingredientes">Escolha um ingrediente:</label>
+    <select id="ingredientes">
+    </select>
+    <button onclick="adicionarIngrediente()">Adicionar Ingrediente</button>
+  </div>
+
+  <h2>Lista de Ingredientes</h2>
+  <ul id="lista-ingredientes"></ul>
+  <h2>Imagens dos Ingredientes</h2>
+  <div id="imagens-ingredientes"></div>
+  <button onclick="calcularValorTotal()">Calcular Valor Total</button>
+  <p id="valor-total"></p>
+  <button onclick="exibirAdminArea()">Área de Administração</button>
+  <script>
+    const ingredientes = {
+      farinha: { valor: 2.0, imagem: 'farinha.jpg' },
+      acucar: { valor: 1.5, imagem: 'acucar.jpg' },
+      ovos: { valor: 3.0, imagem: 'ovos.jpg' },
+      leite: { valor: 1.0, imagem: 'leite.jpg' },
+      fermento: { valor: 0.5, imagem: 'fermento.jpg' }
+    };
+
+    const listaIngredientes = [];
+    function adicionarNovoIngrediente() {
+      const novoIngrediente = document.getElementById('novoIngrediente').value;
+      const valorIngrediente = parseFloat(document.getElementById('valorIngrediente').value);
+      const urlImagem = document.getElementById('urlImagem').value;
+      if (novoIngrediente && !isNaN(valorIngrediente) && urlImagem) {
+        ingredientes[novoIngrediente.toLowerCase()] = { valor: valorIngrediente, imagem: urlImagem };
+        atualizarOpcoesIngredientes();
+        limparCamposAdmin();
+      }
+    }
+    function limparCamposAdmin() {
+      document.getElementById('novoIngrediente').value = '';
+      document.getElementById('valorIngrediente').value = '';
+      document.getElementById('urlImagem').value = '';
+    }
+    function exibirAdminArea() {
+      const adminArea = document.getElementById('admin-area');
+      adminArea.style.display = adminArea.style.display === 'none' ? 'block' : 'none';
+      limparCamposAdmin();
+    }
+    function atualizarOpcoesIngredientes() {
+      const select = document.getElementById('ingredientes');
+      select.innerHTML = '';
+      for (const [ingrediente, info] of Object.entries(ingredientes)) {
+        const option = document.createElement('option');
+        option.value = ingrediente;
+        option.textContent = `${ingrediente.charAt(0).toUpperCase() + ingrediente.slice(1)} - $${info.valor.toFixed(2)}`;
+        select.appendChild(option);
+      }
+    }
+    atualizarOpcoesIngredientes();
+
+  </script>
+</body>
+</html>

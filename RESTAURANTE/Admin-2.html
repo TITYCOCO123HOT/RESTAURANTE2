@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" src="./using Microsoft.AspNetCore.cs"></script>
+  <title>Calculadora de Receita</title>
+</head>
+<body>
+  <h1>Calculadora de Receita</h1>
+
+  <div>
+    <label for="nomeIngrediente">Nome do Ingrediente:</label>
+    <input type="text" id="nomeIngrediente">
+  </div>
+
+  <div>
+    <label for="valorIngrediente">Valor do Ingrediente:</label>
+    <input type="number" id="valorIngrediente" step="0.01">
+  </div>
+
+  <div>
+    <label for="imagemIngrediente">URL da Imagem:</label>
+    <input type="text" id="imagemIngrediente">
+  </div>
+
+  <button onclick="adicionarIngrediente()">Adicionar Ingrediente</button>
+  <button onclick="calcularValorTotal()">Calcular Valor Total</button>
+
+  <h2>Lista de Ingredientes</h2>
+  <ul id="lista-ingredientes"></ul>
+
+  <h2>Valor Total</h2>
+  <div id="valor-total">Total: $0.00</div>
+
+  <script>
+    const listaIngredientes = [];
+
+    function adicionarIngrediente() {
+      const nomeIngrediente = document.getElementById('nomeIngrediente').value;
+      const valorIngrediente = parseFloat(document.getElementById('valorIngrediente').value);
+      const imagemIngrediente = document.getElementById('imagemIngrediente').value;
+
+      if (nomeIngrediente && !isNaN(valorIngrediente) && imagemIngrediente) {
+        const ingrediente = { nome: nomeIngrediente, valor: valorIngrediente, imagem: imagemIngrediente };
+        listaIngredientes.push(ingrediente);
+
+        document.getElementById('nomeIngrediente').value = '';
+        document.getElementById('valorIngrediente').value = '';
+        document.getElementById('imagemIngrediente').value = '';
+
+        const lista = document.getElementById('lista-ingredientes');
+        const li = document.createElement('li');
+        li.textContent = `${ingrediente.nome} - $${ingrediente.valor.toFixed(2)}`;
+        lista.appendChild(li);
+      }
+    }
+    function calcularValorTotal() {
+      const valorTotal = listaIngredientes.reduce((total, ingrediente) => total + ingrediente.valor, 0);
+      const valorTotalElement = document.getElementById('valor-total');
+      valorTotalElement.textContent = `Total: $${valorTotal.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>
